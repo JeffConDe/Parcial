@@ -1,27 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../services/data'; // Apunta correctamente a tu data.ts
+import { DataService } from '../services/data';
 import { NavController } from '@ionic/angular';
-
-// Importación obligatoria de componentes nativos de Ionic para Standalone
-import { 
-  IonHeader, IonToolbar, IonTitle, IonContent, IonSearchbar, 
-  IonRefresher, IonRefresherContent, IonList, IonItem, 
-  IonThumbnail, IonSkeletonText, IonAvatar, IonLabel 
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonSearchbar,
+  IonRefresher,
+  IonRefresherContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  IonSkeletonText,
+  IonIcon
 } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  standalone: true, // Indica que es un componente independiente
+  standalone: true,
   imports: [
-    CommonModule, // Reemplaza los módulos tradicionales para usar *ngIf y *ngFor
+    CommonModule,
     FormsModule,
-    IonHeader, IonToolbar, IonTitle, IonContent, IonSearchbar, 
-    IonRefresher, IonRefresherContent, IonList, IonItem, 
-    IonThumbnail, IonSkeletonText, IonAvatar, IonLabel
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonSearchbar,
+    IonRefresher,
+    IonRefresherContent,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    IonSkeletonText,
+    IonIcon
   ]
 })
 export class HomePage implements OnInit {
@@ -29,7 +49,7 @@ export class HomePage implements OnInit {
   digimonsFiltrados: any[] = [];
   cargando: boolean = true;
 
-  constructor(private dataService: DataService, private navCtrl: NavController) { }
+  constructor(private dataService: DataService, private navCtrl: NavController) {}
 
   ngOnInit() {
     this.cargarDatos();
@@ -38,25 +58,29 @@ export class HomePage implements OnInit {
   cargarDatos(event?: any) {
     this.cargando = true;
     this.dataService.getDigimons().subscribe({
-      next: (res) => {
+      next: (res: any[]) => {
         this.digimons = res;
         this.digimonsFiltrados = res;
         this.cargando = false;
-        if (event) event.target.complete();
+        if (event) {
+          event.target.complete();
+        }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error(err);
         this.cargando = false;
-        if (event) event.target.complete();
+        if (event) {
+          event.target.complete();
+        }
       }
     });
   }
 
   buscarDigimon(event: any) {
-    const texto = event.target.value.toLowerCase();
+    const texto = event.target.value?.toLowerCase() || '';
     if (texto && texto.trim() !== '') {
-      this.digimonsFiltrados = this.digimons.filter(d => 
-        d.name.toLowerCase().includes(texto)
+      this.digimonsFiltrados = this.digimons.filter((d) =>
+        d.name?.toLowerCase().includes(texto)
       );
     } else {
       this.digimonsFiltrados = this.digimons;

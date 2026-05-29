@@ -3,26 +3,55 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ nombreDigimon | uppercase }}</ion-title>
+    <ion-title>DETALLE</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <div *ngIf="cargando" class="ion-text-center" style="margin-top: 50px;">
+<ion-content class="detalle-page">
+  <div *ngIf="cargando" class="loading-state">
     <ion-spinner name="crescent" color="primary"></ion-spinner>
     <p>Cargando detalles...</p>
   </div>
 
-  <ion-card *ngIf="!cargando && digimon">
-    <img [src]="digimon.img" alt="{{ digimon.name }}" style="width: 100%; max-height: 300px; object-fit: contain; margin-top: 20px;" />
-    
-    <ion-card-header>
-      <ion-card-title color="secondary">{{ digimon.name }}</ion-card-title>
-      <ion-card-subtitle>Nivel: **{{ digimon.level }}**</ion-card-subtitle>
-    </ion-card-header>
+  <div *ngIf="!cargando && digimon" class="detalle-shell">
+    <div class="detalle-header">
+      <div class="detail-number">{{ detailId }}</div>
+      <h1>{{ digimon.name }}</h1>
+    </div>
 
-    <ion-card-content>
-      <p><strong>Identificador / Registro:</strong> En la base de datos oficial del DigiDex, este espécimen está clasificado con el rango de poder de tipo {{ digimon.level }}.</p>
-    </ion-card-content>
-  </ion-card>
+    <div class="image-frame">
+      <span class="image-guide">Imagen oficial</span>
+      <img [src]="digimon.img" alt="{{ digimon.name }}" />
+    </div>
+
+    <div class="info-row">
+      <div class="info-card">
+        <div class="info-title">Level</div>
+        <div class="info-value">{{ digimon.level }}</div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">Attribute</div>
+        <div class="info-value">{{ attribute }}</div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">Type</div>
+        <div class="info-value">{{ type }}</div>
+      </div>
+    </div>
+
+    <div class="fields-section">
+      <div class="fields-title">Fields</div>
+      <div class="fields-grid">
+        <div class="field-chip">
+          <ion-icon name="flash-outline"></ion-icon>
+        </div>
+        <div class="field-chip">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+        </div>
+        <div class="field-chip">
+          <ion-icon name="sparkles-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>

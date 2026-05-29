@@ -1,20 +1,53 @@
-<ion-header [translucent]="true">
+<ion-header translucent>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>DigiDex</ion-title>
+  </ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-searchbar
+      placeholder="Buscar Digimon..."
+      debounce="200"
+      (ionInput)="buscarDigimon($event)">
+    </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content fullscreen>
+  <ion-refresher slot="fixed" (ionRefresh)="cargarDatos($event)">
+    <ion-refresher-content pullingText="Desliza para actualizar..."></ion-refresher-content>
+  </ion-refresher>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <section class="hero">
+    <h2>Explora tu DigiDex</h2>
+    <p>Busca Digimons por nombre y toca una tarjeta para ver todos los detalles.</p>
+  </section>
+
+  <div class="cards-container" *ngIf="!cargando && digimonsFiltrados.length > 0">
+    <ion-card *ngFor="let d of digimonsFiltrados" button (click)="irAlDetalle(d.name)">
+      <img [src]="d.img" [alt]="d.name" />
+      <ion-card-header>
+        <ion-card-title>{{ d.name }}</ion-card-title>
+        <ion-card-subtitle>{{ d.level }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Toque para ver las estadísticas completas y el perfil del Digimon.</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div class="empty-state" *ngIf="!cargando && digimonsFiltrados.length === 0">
+    <ion-icon name="search-circle-outline"></ion-icon>
+    <p>No se encontró ningún Digimon. Prueba otro nombre.</p>
+  </div>
+
+  <div class="skeleton-grid" *ngIf="cargando">
+    <ion-card *ngFor="let item of [1,2,3,4]">
+      <ion-card-header>
+        <ion-skeleton-text animated style="width: 55%; height: 22px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 40%; height: 16px; margin-top: 12px;"></ion-skeleton-text>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-skeleton-text animated style="width: 100%; height: 180px;"></ion-skeleton-text>
+      </ion-card-content>
+    </ion-card>
   </div>
 </ion-content>

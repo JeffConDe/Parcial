@@ -35,3 +35,16 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+body {
+  background: #04050f;
+  color: #e8ecff;
+}
+
+ion-app,
+ion-content {
+  background: transparent;
+}
+
+ion-toolbar {
+  --background: linear-gradient(180deg, #0f0e24, #1a0f37);
+}
