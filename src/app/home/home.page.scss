@@ -45,6 +45,19 @@ ion-card:hover {
   border-color: rgba(0, 212, 255, 0.35);
 }
 
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 14px 16px 0;
+}
+
+.page-info {
+  color: #cedcff;
+  font-weight: 600;
+}
+
 ion-card img {
   width: 100%;
   height: 220px;

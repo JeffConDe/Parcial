@@ -39,6 +39,18 @@
     <p>No se encontró ningún Digimon. Prueba otro nombre.</p>
   </div>
 
+  <div class="pagination-bar" *ngIf="!cargando && totalPages > 1">
+    <ion-button fill="outline" size="small" [disabled]="page === 0" (click)="cambiarPagina(-1)">
+      Anterior
+    </ion-button>
+    <div class="page-info">
+      Página {{ page + 1 }} de {{ totalPages }}
+    </div>
+    <ion-button fill="outline" size="small" [disabled]="page + 1 >= totalPages" (click)="cambiarPagina(1)">
+      Siguiente
+    </ion-button>
+  </div>
+
   <div class="skeleton-grid" *ngIf="cargando">
     <ion-card *ngFor="let item of [1,2,3,4]">
       <ion-card-header>

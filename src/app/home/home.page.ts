@@ -17,7 +17,8 @@ import {
   IonCardSubtitle,
   IonCardContent,
   IonSkeletonText,
-  IonIcon
+  IonIcon,
+  IonButton
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -41,13 +42,17 @@ import {
     IonCardSubtitle,
     IonCardContent,
     IonSkeletonText,
-    IonIcon
+    IonIcon,
+    IonButton
   ]
 })
 export class HomePage implements OnInit {
   digimons: any[] = [];
   digimonsFiltrados: any[] = [];
   cargando: boolean = true;
+  page = 0;
+  totalPages = 0;
+  totalElements = 0;
 
   constructor(private dataService: DataService, private navCtrl: NavController) {}
 
@@ -57,10 +62,12 @@ export class HomePage implements OnInit {
 
   cargarDatos(event?: any) {
     this.cargando = true;
-    this.dataService.getDigimons().subscribe({
-      next: (res: any[]) => {
-        this.digimons = res;
-        this.digimonsFiltrados = res;
+    this.dataService.getDigimons(this.page).subscribe({
+      next: (res: any) => {
+        this.digimons = res.content || [];
+        this.digimonsFiltrados = this.digimons;
+        this.totalPages = res.pageable?.totalPages ?? 0;
+        this.totalElements = res.pageable?.totalElements ?? 0;
         this.cargando = false;
         if (event) {
           event.target.complete();
@@ -74,6 +81,15 @@ export class HomePage implements OnInit {
         }
       }
     });
+  }
+
+  cambiarPagina(delta: number) {
+    const nextPage = this.page + delta;
+    if (nextPage < 0 || nextPage >= this.totalPages) {
+      return;
+    }
+    this.page = nextPage;
+    this.cargarDatos();
   }
 
   buscarDigimon(event: any) {
